@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ideas Fundamentales del MCC - Edición Interactiva</title>
+    <style>
+        /* ===== VARIABLES DE DISEÑO (PERSONALIZA AQUÍ) ===== */
+        :root {
+            --color-primario: #0056b3;
+            --color-secundario: #003d7a;
+            --color-terciario: #FFD700;
+            --color-fondo: #f0f2f5;
+            --color-texto: #333;
+            --color-texto-claro: #fff;
+            --color-acento: #4CAF50;
+            --color-error: #F44336;
+            --fuente-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --transicion: all 0.3s ease;
+            --sombra: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* ===== ESTILOS GENERALES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--fuente-principal);
+            line-height: 1.6;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        /* ===== PORTADA DEL LIBRO ===== */
+        #portada {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://ejemplo.com/portada-libro.jpg') no-repeat center center/cover;
+            color: var(--color-texto-claro);
+            padding: 20px;
+            position: relative;
+        }
+
+        #portada h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease;
+        }
+
+        #portada .subtitle {
+            font-size: 1.5em;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        #portada .start-btn {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            background-color: var(--color-terciario);
+            color: var(--color-texto);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transicion);
+            box-shadow: var(--sombra);
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        #portada .start-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            background-color: #FFC107;
+        }
+
+        /* ===== PESTAÑAS SUPERIORES ===== */
+        .tabs-container {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 1000;
+            box-shadow: var(--sombra);
+            padding: 10px 0;
+        }
+
+        .tabs {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow-x: auto;
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            background: #e9ecef;
+            border: none;
+            outline: none;
+            transition: var(--transicion);
+            font-weight: 600;
+            color: #495057;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab:hover {
+            background: #dfe3e8;
+        }
+
+        .tab.active {
+            background: var(--color-primario);
+            color: var(--color-texto-claro);
+            border-bottom: 3px solid var(--color-terciario);
+            font-weight: 700;
+        }
+
+        /* ===== CONTENIDO DE LAS PESTAÑAS ===== */
+        .tab-content {
+            display: none;
+            padding: 40px 20px;
+            background: white;
+            min-height: 80vh;
+            animation: slideIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .chapter-title {
+            color: var(--color-primario);
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--color-primario);
+        }
+
+        .section-title {
+            color: #2c3e50;
+            margin: 30px 0 15px 0;
+            font-size: 1.5em;
+            border-left: 4px solid var(--color-primario);
+            padding-left: 15px;
+        }
+
+        .subsection-title {
+            color: #34495e;
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .highlight {
+            background-color: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+            border-left: 5px solid #2196F3;
+            font-size: 1.1em;
+            position: relative;
+        }
+
+        .highlight strong {
+            color: #0d47a1;
+        }
+
+        /* Botón de volver arriba */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--color-primario);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: var(--sombra);
+            transition: var(--transicion);
+            display: none;
+            z-index: 999;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--color-secundario);
+            transform: translateY(-5px);
+        }
+
+        /* ===== ESTILOS PARA EL QUIZ ===== */
+        .quiz-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            border-radius: 20px;
+            color: white;
+            margin: 50px auto;
+            box-shadow: var(--sombra);
+            max-width: 800px;
+        }
+
+        .quiz-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .question {
+            background: rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+            position: relative;
+            border-left: 5px solid var(--color-terciario);
+        }
+
+        .options label {
+            display: block;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transicion);
+            border: 2px solid transparent;
+        }
+
+        .options label:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateX(5px);
+        }
+
+        .options input[type="radio"] {
+            margin-right: 15px;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background: var(--color-terciario);
+            color: #333;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.3em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transicion);
+            margin-top: 40px;
+            box-shadow: var(--sombra);
+        }
+
+        .submit-btn:hover {
+            background: #FFC107;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        #quizResult {
+            margin-top: 40px;
+            padding: 30px;
+            border-radius: 15px;
+            font-size: 1.4em;
+            font-weight: 700;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-correct {
+            background: rgba(76, 175, 80, 0.3);
+            border: 3px solid #4CAF50;
+        }
+
+        .result-incorrect {
+            background: rgba(244, 67, 54, 0.3);
+            border: 3px solid #F44336;
+        }
+
+        .score-display {
+            font-size: 1.8em;
+            font-weight: 700;
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            border: 3px solid white;
+        }
+
+        /* ===== ANIMACIONES ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #343a40;
+            color: white;
+            margin-top: 50px;
+            font-size: 0.9em;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            #portada h1 {
+                font-size: 2.5em;
+            }
+            .tabs {
+                flex-wrap: wrap;
+            }
+            .tab {
+                flex: 1 1 100%;
+                text-align: center;
+                border-radius: 0;
+            }
+            .chapter-title {
+                font-size: 1.8em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #portada h1 {
+                font-size: 2em;
+            }
+            .quiz-title {
+                font-size: 2em;
+            }
+            .question {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- PORTADA DEL LIBRO -->
+        <div id="portada">
+            <h1>IDEAS FUNDAMENTALES DEL MCC</h1>
+            <p class="subtitle">Tercera Edición - OMCC (2014)</p>
+            <p class="subtitle">Movimiento de Cursillos de Cristiandad</p>
+            <button class="start-btn" onclick="mostrarContenido()">¡Comenzar Lectura!</button>
+        </div>
+
+        <!-- CONTENEDOR DE PESTAÑAS (INICIALMENTE OCULTO) -->
+        <div id="contenidoPrincipal" style="display: none;">
+            <!-- PESTAÑAS SUPERIORES -->
+            <div class="tabs-container">
+                <ul class="tabs">
+                    <li class="tab active" onclick="openTab(event, 'cap1')">Historia</li>
+                    <li class="tab" onclick="openTab(event, 'cap2')">Carisma</li>
+                    <li class="tab" onclick="openTab(event, 'cap3')">Mentalidad</li>
+                    <li class="tab" onclick="openTab(event, 'cap4')">Finalidad</li>
+                    <li class="tab" onclick="openTab(event, 'cap5')">Estrategia</li>
+                    <li class="tab" onclick="openTab(event, 'cap6')">Método</li>
+                    <li class="tab" onclick="openTab(event, 'cap7')">Precursillo</li>
+                    <li class="tab" onclick="openTab(event, 'cap8')">Cursillo</li>
+                    <li class="tab" onclick="openTab(event, 'cap9')">Poscursillo</li>
+                    <li class="tab" onclick="openTab(event, 'cap10')">En la Iglesia</li>
+                    <li class="tab" onclick="openTab(event, 'cap11')">Estructuras</li>
+                    <li class="tab" onclick="openTab(event, 'quiz')">¡Juego de Preguntas!</li>
+                </ul>
+            </div>
+
+            <!-- CONTENIDO DE LAS PESTAÑAS -->
+
+            <!-- Capítulo 1: Historia -->
+            <div id="cap1" class="tab-content active">
+                <h2 class="chapter-title">Capítulo 1: La Historia del MCC</h2>
+                <div class="section-title">1. Introducción</div>
+                <p>Conocer la historia es esencial para reconocer la identidad del MCC, actualizarla, mantenerla y responder a la exigencia de renovación que el Espíritu inspira.</p>
+                <div class="subsection-title">A. La necesidad e importancia de conocer nuestra historia</div>
+                <p>Permite hacer memoria agradecida del pasado, vivir con intensidad el presente y abrirse con confianza al futuro.</p>
+                <div class="subsection-title">B. Un enfoque contextual y conceptual</div>
+                <p>No se trata solo de fechas y nombres, sino de comprender las ideas, actitudes y opciones pastorales que dieron origen al MCC.</p>
+
+                <div class="section-title">2. Los antecedentes del MCC</div>
+                <div class="subsection-title">A. La situación general en España</div>
+                <p>Nace en Mallorca en la década de 1940, en un contexto de posguerra civil (1936-1939). La sociedad se reconstruía en un clima de cambios, y aunque el cristianismo era la religión oficial, predominaba un "cristianismo social" sin auténtica vida cristiana coherente.</p>
+                <div class="subsection-title">B. La Acción Católica</div>
+                <p>La Juventud de Acción Católica Española (JACE), bajo la dirección de Manuel Aparici, preparaba una gran peregrinación a Santiago de Compostela (1948). Para ello, organizó "Cursillos de Adelantados de Peregrinos" y "Cursillos de Jefes de Peregrinos".</p>
+
+                <div class="section-title">3. Los inicios del MCC</div>
+                <div class="subsection-title">A. Los jóvenes de Acción Católica en Mallorca</div>
+                <p>Un grupo de jóvenes mallorquines, muy activos en la JACE, participaron intensamente en la preparación para la peregrinación. Eran personas con una notable inquietud apostólica y una clara insatisfacción con los planteamientos pastorales vigentes.</p>
+                <div class="subsection-title">B. Los primeros Cursillos</div>
+                <p>Entre 1944 y 1949, figuras como Eduardo Bonnín, Mons. Sebastián Gayá y el Obispo Mons. Juan Hervás desarrollaron una nueva forma de evangelizar, especialmente a los alejados. Adaptaron elementos de los cursillos de la Acción Católica para una nueva finalidad: hacer posible la vivencia y convivencia de lo fundamental cristiano.</p>
+                <div class="subsection-title">C. El inicio del Movimiento</div>
+                <p>Se configuró un movimiento con elementos distintivos: un grupo de personas que compartían una mentalidad, una finalidad ("vertebrar la Cristiandad"), un método eficaz y un mínimo de organización. La mentalidad se convirtió en la piedra angular: percibían un mundo de espaldas a Dios y creían que la solución estaba en transformar a las personas para que, como cristianos, transformaran los ambientes.</p>
+
+                <div class="section-title">4. La expansión del MCC</div>
+                <div class="subsection-title">A. En España</div>
+                <p>Se difundió desde Mallorca a toda España, comenzando por Valencia en 1953. La carta pastoral de Mons. Juan Hervás "Cursillos de Cristiandad, Instrumento de Renovación Cristiana" (1957) fue clave para su aceptación nacional e internacional.</p>
+                <div class="subsection-title">B. Desde España, a América</div>
+                <p>Laicos y sacerdotes llevaron el MCC a Latinoamérica. El primer cursillo fuera de España fue en Colombia (1953), también el primero para mujeres. Se extendió con gran pujanza por todo el continente.</p>
+                <div class="subsection-title">C. El resto del mundo</div>
+                <p>Se introdujo en Europa Occidental, Asia y Oceanía. Un nuevo impulso llegó cuando, desde Austria, se introdujo en los países del Este de Europa.</p>
+                <div class="subsection-title">D. Un movimiento universal</div>
+                <p>Hoy, el MCC está presente en todo el mundo, actuando como un eficaz instrumento de evangelización en diversas culturas y realidades sociales.</p>
+
+                <div class="section-title">5. La creación de estructuras formales</div>
+                <div class="subsection-title">A. Un paso necesario</div>
+                <p>La expansión mundial requirió estructuras organizativas para mantener la identidad y coordinar la acción.</p>
+                <div class="subsection-title">B. Los Secretariados Diocesanos</div>
+                <p>Fueron la primera estructura, cauce para la vinculación con la Iglesia diocesana y el obispo.</p>
+                <div class="subsection-title">C. Los Secretariados Nacionales</div>
+                <p>Surgieron para coordinar y unificar la vida del MCC en un país. El primero se creó en México en 1961.</p>
+                <div class="subsection-title">D. Los Encuentros y los Grupos Internacionales</div>
+                <p>Para coordinar a nivel mundial, surgieron los Grupos Internacionales: OLCC (Latinoamérica, 1970), GET (Europa, 1972), GHI (Habla Inglesa, 1973), APG (Asia-Pacífico, 1990) y NACG (Norte América/Caribe, 1997).</p>
+                <div class="subsection-title">E. El Organismo Mundial de Cursillos de Cristiandad (OMCC)</div>
+                <p>Fundado en 1980 en Santo Domingo, República Dominicana. En 2004 recibió el reconocimiento canónico del Pontificio Consejo para los Laicos.</p>
+
+                <div class="section-title">6. El reconocimiento canónico del OMCC</div>
+                <p>En 2004, el Pontificio Consejo para los Laicos reconoció canónicamente al OMCC como "estructura de coordinación, promoción y difusión de la experiencia de los Cursillos de Cristiandad". En 2014 se aprobó definitivamente su estatuto.</p>
+
+                <div class="section-title">7. Conclusión</div>
+                <p>Es necesario tener conciencia de la historia del MCC, reconocer la obra del Espíritu y la entrega de tantas personas. Esta historia nos permite descubrir la realidad y la identidad del MCC y nos invita a responder con gratitud, compromiso y esperanza.</p>
+                <button class="back-to-top" onclick="scrollToTop()">↑</button>
+            </div>
+
+            <!-- Capítulo 2: Carisma -->
+            <div id="cap2" class="tab-content">
+                <h2 class="chapter-title">Capítulo 2: El Carisma del MCC</h2>
+                <div class="section-title">1. Introducción</div>
+                <p>La Iglesia ha reconocido formalmente al MCC un carisma propio y original, que lo caracteriza e identifica. En este carisma está contenido, como una semilla, todo lo esencial del Movimiento: su mentalidad, su finalidad y su método.</p>
+
+                <div class="section-title">2. Descripción general del carisma</div>
+                <div class="subsection-title">A. Gracias del Espíritu Santo</div>
+                <p>Los carismas son gracias del Espíritu Santo, ordenadas a la edificación de la Iglesia, al bien de los hombres y a las necesidades del mundo (CIC 799).</p>
+                <div class="subsection-title">B. Para la persona y para la Iglesia</div>
+                <p>Se han de acoger con reconocimiento, pues son una maravillosa riqueza de gracia para la vitalidad apostólica y la santidad de la Iglesia (CIC 800).</p>
+                <div class="subsection-title">C. Discernidos por los pastores de la Iglesia</div>
+                <p>El discernimiento de carismas es necesario y compete a los pastores de la Iglesia (CIC 801).</p>
+
+                <div class="section-title">3. Descripción del carisma del MCC</div>
+                <div class="subsection-title">A. Descripción básica (Numeral 40)</div>
+                <div class="highlight">
+                    <strong>“El carisma de Cursillos es un don que el Espíritu Santo derrama en su Iglesia, que conforma una mentalidad e impulsa un movimiento eclesial, que, mediante un método kerigmático propio, posibilita la vivencia y la convivencia de lo fundamental cristiano, ayuda a descubrir y realizar la propia vocación personal y promueve grupos de cristianos que fermenten de evangelio los ambientes, a través de la amistad.”</strong>
+                </div>
+                <div class="subsection-title">B. Tiene los rasgos generales de todo carisma</div>
+                <p><strong>1. Don especial del Espíritu Santo:</strong> Un don para hacer llegar el amor de Dios, especialmente a los alejados.<br>
+                <strong>2. Acogido por personas, para bien de la Iglesia:</strong> Fue acogido por figuras como Eduardo Bonnín, Mons. Sebastián Gayá y Mons. Juan Hervás. Es un bien para la Iglesia, pues ha llevado el amor de Dios a millones de personas.<br>
+                <strong>3. Discernido por los pastores:</strong> Fue discernido inicialmente por Mons. Juan Hervás y posteriormente por los Papas Pablo VI, Juan Pablo II, Benedicto XVI y Francisco, así como por el Pontificio Consejo para los Laicos.</p>
+                <div class="subsection-title">C. Tiene unos elementos específicos y característicos</div>
+                <p>El carisma del MCC se manifiesta en 10 elementos clave:<br>
+                1. Conforma una mentalidad.<br>
+                2. Origina e impulsa un movimiento eclesial.<br>
+                3. Tiene un método kerigmático propio.<br>
+                4. Actúa por la vía de la amistad y del testimonio.<br>
+                5. Promueve el triple encuentro personal (con uno mismo, con Jesucristo y con los demás).<br>
+                6. Posibilita la conversión.<br>
+                7. Permite la vivencia y convivencia de lo fundamental cristiano.<br>
+                8. Ayuda a descubrir y realizar la vocación personal.<br>
+                9. Propicia la creación de grupos de cristianos donde compartir la vida en amistad cristiana.<br>
+                10. Pretende la fermentación evangélica de los ambientes.</p>
+
+                <div class="section-title">4. Validez permanente del carisma y su influencia hoy</div>
+                <p>El mundo de hoy sigue de espaldas a Dios, marcado por la secularización y la indiferencia religiosa. Dios sigue ofreciendo su amor en Cristo por el Espíritu, y el carisma del MCC sigue siendo un cauce eficaz para llevar ese amor a los hombres de hoy, especialmente a los alejados.</p>
+
+                <div class="section-title">5. Fidelidad al carisma</div>
+                <p>Es necesario un estudio permanente del carisma para enriquecerlo y corregir deficiencias. Se requiere un equilibrio entre fidelidad al carisma original y la necesaria renovación para responder a las demandas del mundo actual. No es una elección entre dos opuestos, sino la integración de ambos.</p>
+
+                <div class="section-title">6. Conclusión</div>
+                <p>Es esencial entender la "dimensión carismática" del MCC, reconociendo que en su fundamento hay un don especial del Espíritu. Es necesario no solo conocerlo, sino vivirlo, asumiendo una "fidelidad creativa" que mantenga la esencia mientras se adapta a las circunstancias actuales.</p>
+                <button class="back-to-top" onclick="scrollToTop()">↑</button>
+            </div>
+
+            <!-- Capítulo 3: Mentalidad -->
+            <div id="cap3" class="tab-content">
+                <h2 class="chapter-title">Capítulo 3: La Mentalidad del MCC</h2>
+                <div class="section-title">1. Introducción</div>
+                <p>El carisma del MCC es un don que conforma una mentalidad propia. La mentalidad es esencial al MCC y fue vivida y compartida por un grupo de personas, originando un movimiento con una finalidad, estrategia y método concretos.</p>
+
+                <div class="section-title">2. Carisma y mentalidad en el MCC</div>
+                <div class="subsection-title">A. Concepto genérico de mentalidad</div>
+                <p>Es un modo de pensar, una perspectiva, un conjunto de creencias, ideas, actitudes y valores.</p>
+                <div class="subsection-title">B. La configuración original de la mentalidad del MCC</div>
+                <p>Surgió ante la realidad de un mundo de espaldas a Dios. La conclusión fue que se necesitaba una nueva respuesta evangelizadora que renovara el mundo desde dentro, transformando a las personas. Se enfatizó el "ser" cristiano (vivir lo fundamental) sobre el "hacer" cosas cristianas.</p>
+                <div class="subsection-title">C. La mentalidad del MCC hoy</div>
+                <p>Mantiene su núcleo esencial pero se adapta a la realidad actual. El punto de partida sigue siendo el conocimiento de una realidad en la que las personas ignoran el amor de Dios. La propuesta básica sigue siendo la misma: compartir ese amor mediante un método kerigmático.</p>
+
+                <div class="section-title">3. La mentalidad del MCC</div>
+                <div class="subsection-title">A. Definición</div>
+                <p>Es una perspectiva vital, una forma de entender la realidad, nacida de la vivencia del carisma. Configura un conjunto de criterios, convicciones, actitudes vitales y opciones de fe que transforman la vida de la persona en una vida cristiana alegre, testimonial y misionera, que se comparte en amistad.</p>
+                <div class="subsection-title">B. Rasgos esenciales</div>
+                <p><strong>1. Una nueva visión de la realidad:</strong><br>
+                - <em>De Dios:</em> Un Dios amor, Padre, Hijo y Espíritu Santo, que ama a cada persona de forma única.<br>
+                - <em>De la persona:</em> Única, irrepetible, capaz de vivir desde Dios su propia vida con plenitud.<br>
+                - <em>Del mundo:</em> Espacio de salvación, ámbito de vida cristiana, para ser transformado desde el Evangelio.<br>
+                - <em>De la Iglesia y la evangelización:</em> Sacramento de salvación, llamada a servir para que los hombres lleguen a Dios. Los laicos tienen la misión de ser fermento en el mundo.<br><br>
+                <strong>2. Unas convicciones de partida:</strong><br>
+                - El cristianismo es la solución integral a la realidad del hombre.<br>
+                - Toda persona puede encontrarse con Dios y convertirse en testigo.<br>
+                - El testimonio, la amistad y la oración son clave para el encuentro con Cristo.<br><br>
+                <strong>3. Unos criterios de actuación:</strong><br>
+                - <em>Amistad:</em> Forma privilegiada de comunicación y convivencia.<br>
+                - <em>Sinceridad:</em> Vivir en sinceridad con uno mismo, con Dios y con los demás.<br>
+                - <em>Normalidad:</em> La vida cristiana es vida cotidiana y ordinaria.<br>
+                - <em>Libertad:</em> Respeto absoluto por la libertad de los demás.<br>
+                - <em>Alegría:</em> Fuente de alegría por el encuentro con Cristo y la vida cristiana.</p>
+
+                <div class="section-title">4. La mentalidad, clave del MCC</div>
+                <p>Explica todo lo que es el MCC: el porqué, el para qué y el cómo. Forma la base de nuestros juicios y criterios. Determina la finalidad, la estrategia, el método y las estructuras. Se actualiza sin perder su identidad y crea unidad en la diversidad.</p>
+
+                <div class="section-title">5. La mentalidad en los responsables del MCC</div>
+                <p>Debe vivirse, mantenerse y transmitirse. El MCC no es una mentalidad, tiene una mentalidad. Se transmite fundamentalmente por vía del contacto personal, por personas que la viven profundamente y la convierten en elemento inspirador.</p>
+
+                <div class="section-title">6. Conclusión</div>
+                <p>Es fundamental tener conciencia de la importancia de la mentalidad. Es consecuencia inmediata del carisma específico del MCC. Debe ser vivida, acogida y asumida por personas concretas, manteniendo una permanente actitud de reflexión y crecimiento.</p>
+                <button class="back-to-top" onclick="scrollToTop()">↑</button>
+            </div>
+
+            <!-- Capítulo 4: Finalidad -->
+            <div id="cap4" class="tab-content">
+                <h2 class="chapter-title">Capítulo 4: La Finalidad del MCC</h2>
+                <div class="section-title">1. Introducción</div>
+                <p>El carisma del MCC promueve la creación de un movimiento eclesial con una finalidad específica relacionada con la evangelización.</p>
+
+                <div class="section-title">2. Finalidad y carisma</div>
+                <p>Todos los carismas son para una misión específica en la Iglesia y en el mundo. El carisma del MCC determina su finalidad propia: hacer llegar el amor de Dios a todos los hombres, posibilitar que se encuentren con Cristo, vivan de forma nueva y transformen el mundo.</p>
+
+                <div class="section-title">3. La finalidad del MCC</div>
+                <div class="subsection-title">A. Descripción general</div>
+                <div class="highlight">
+                    <strong>“Posibilitar la vivencia y la convivencia de lo Fundamental Cristiano, ayudando a descubrir y a realizar la vocación personal, con respeto a la misma, y promover así núcleos de cristianos que vayan fermentando de Evangelio los ambientes.”</strong>
+                </div>
+                <p>Esto significa llevar la Buena Nueva del amor de Dios a toda persona, especialmente a los alejados, para que vivan lo fundamental cristiano en su vida cotidiana, compartiéndolo en amistad y transformando los ambientes.</p>
+                <div class="subsection-title">B. Aspectos esenciales</div>
+                <p><strong>1. Ofrece una vida nueva a la persona:</strong><br>
+                - <em>Lo fundamental cristiano:</em> Jesucristo (el encuentro con Él), la Gracia (don de Dios para vivir en comunión), la Fe (respuesta del hombre) y la Iglesia (lugar donde se vive todo esto).<br>
+                - <em>La vivencia de lo fundamental:</em> Implica un triple encuentro (con uno mismo, con Cristo y con los demás), un proceso de conversión y una experiencia que se desarrolla en la amistad con Cristo, en comunidad y con responsabilidad apostólica.<br>
+                - <em>Para toda persona:</em> Es una propuesta universal, con preferencia para los alejados.<br>
+                - <em>Siguiendo su propia vocación:</em> Humana (realizarse como persona), cristiana (vivir el bautismo) y cristiana específica (contribuir al Reino de Dios).<br><br>
+                <strong>2. Promueve Grupos de Cristianos:</strong><br>
+                Pequeños grupos (Reuniones de Grupo y Ultreyas) donde se comparte la vida cristiana en amistad, se madura en la fe y se promueve el compromiso apostólico.<br><br>
+                <strong>3. Impulsa la fermentación evangélica de los ambientes:</strong><br>
+                Transformar la sociedad, evangelizar la cultura. Se logra por la acción individual de cada cristiano en su ambiente y por la acción comunitaria de los grupos.</p>
+
+                <div class="section-title">4. Finalidad y método</div>
+                <p>Existe una conexión "orgánica" entre finalidad, estrategia y método. La finalidad es el "para qué", el método es el "cómo". El método siempre debe servir y adecuarse a la finalidad.</p>
+
+                <div class="section-title">5. Conclusión</div>
+                <p>La finalidad es la expresión última del carisma. La identidad del MCC está garantizada por el empeño en conseguir su finalidad. La finalidad debe configurar todas las actuaciones y estructuras del MCC.</p>
+                <button class="back-to-top" onclick="scrollToTop()">↑</button>
+            </div>
+
+            <!-- Capítulo 5: Estrategia -->
+            <div id="cap5" class="tab-content">
+                <h2 class="chapter-title">Capítulo 5: La Estrategia del MCC</h2>
+                <div class="section-title">1. Introducción</div>
+                <p>La estrategia es el plan detallado para alcanzar la finalidad del MCC. Supone fidelidad al carisma y a la mentalidad, y uso adecuado del método.</p>
+
+                <div class="section-title">2. Estrategia, finalidad, método y estructuras</div>
+                <p>La estrategia existe para conseguir la finalidad. El método es la forma concreta de llevar a cabo la estrategia. Las estructuras humanas (Escuelas y Secretariados) son las responsables de aplicar el método.</p>
+
+                <div class="section-title">3. Estrategia fundamental del MCC</div>
+                <div class="subsection-title">A. La opción básica</div>
+                <div class="highlight">
+                    <strong>Transformar personas para transformar ambientes.</strong>
+                </div>
+                <p>Esta fue la opción de los iniciadores. El MCC posibilita la fermentación cristiana de los ambientes por la acción de personas convertidas que, actuando desde una realidad comunitaria, se proyectan sobre sus propios ambientes.</p>
+                <div class="subsection-title">B. Consecuencias de esa opción básica</div>
+                <p><strong>1. Opción por la persona:</strong> La persona es el centro. Se trata de hacer que personas concretas se encuentren con el Señor y vivan en plenitud. Se considera especialmente a personas con mayor capacidad de influencia ("personas clave").<br>
+                <strong>2. Opción por el kerigma:</strong> La proclamación kerigmática (primer anuncio) es el cauce fundamental para el encuentro personal con Cristo y la conversión. Exige la existencia de testigos coherentes.<br>
+                <strong>3. Opción por la vivencia comunitaria y la amistad:</strong> La vida cristiana es convivencia. La amistad es un pilar de la actuación del MCC.<br>
+                <strong>4. Opción por la fermentación de los ambientes:</strong> La finalidad última no es la conversión aislada, sino la transformación gradual de la sociedad. Se estudian y disciernen los ambientes para actuar eficazmente en ellos.</p>
+
+                <div class="section-title">4. La implementación de la estrategia</div>
+                <p>El primer paso es contar con la ayuda de la Gracia de Dios, pedida con oración. La estrategia se desarrolla en el método propio del MCC:<br>
+                - <strong>Precursillo:</strong> Búsqueda, selección y preparación de candidatos (prioritariamente alejados y personas clave) y estudio de los ambientes.<br>
+                - <strong>Cursillo:</strong> Posibilitar la experiencia del triple encuentro y el inicio de un proceso de conversión.<br>
+                - <strong>Poscursillo:</strong> Promover grupos de cristianos (Reuniones de Grupo y Ultreyas) para compartir la vida cristiana y actuar en los ambientes.<br>
+                El MCC desarrolla su estrategia en comunión y coordinación con la actividad pastoral de la Iglesia diocesana.</p>
+
+                <div class="section-title">5. Conclusión</div>
+                <p>Es necesario entender la estrategia para entender y aplicar adecuadamente el método. Sin una visión global de la finalidad y los planteamientos estratégicos, el método puede distorsionarse.</p>
+                <button class="back-to-top" onclick="scrollToTop()">↑</button>
+            </div>
+
+            <!-- Capítulo 6: Método -->
+            <div id="cap6" class="tab-content">
+                <h2 class="chapter-title">Capítulo 6: El Método del MCC</h2>
+                <div class="section-title">1. Introducción</div>
+                <p>El método es la disposición y el empleo adecuado de ciertos medios para alcanzar un fin. El MCC tiene un método propio, relacionado y derivado de su carisma.</p>
+
+                <div class="section-title">2. Método, finalidad, mentalidad y estrategia</div>
+                <p>El método es la mentalidad hecha vida. Está al servicio de la finalidad (conversión de las personas para la fermentación de los ambientes). Es la forma de desarrollar la estrategia. Y caracteriza al Movimiento: su importancia es tal que parece imprimirle "carácter".</p>
+
+                <div class="section-title">3. Un método en tres tiempos</div>
+                <div class="subsection-title">A. Precursillo, Cursillo y Poscursillo</div>
+                <p>El método se estructura en tres tiempos inseparables que constituyen una unidad perfecta. Ningún tiempo puede disociarse de los otros.</p>
+                <div class="subsection-title">B. Integridad de los tres tiempos</div>
+                <p>La secuencia de los tres tiempos es la forma de actuar eficazmente en las diversas circunstancias de la vida. La unidad de los tres tiempos es esencial para la finalidad del MCC.</p>
+                <div class="subsection-title">C. Integridad de sus elementos esenciales</div>
+                <p>Es vital mantener las características y elementos esenciales del método, discerniendo lo esencial de lo accesorio.</p>
+
+                <div class="section-title">4. Características esenciales del método</div>
+                <div class="subsection-title">A. Kerigmático</div>
+                <p><strong>1. Qué es el kerigma:</strong> Proclamación del mensaje de Salvación de Jesucristo (primer anuncio).<br>
+                <strong>2. La proclamación kerigmática:</strong><br>
+                - <em>Primer anuncio:</em> Principal y base de toda evangelización.<br>
+                - <em>Cristocéntrica:</em> Centrada en Cristo.<br>
+                - <em>Jubilosa:</em> Buena Noticia, fuente de alegría.<br>
+                - <em>Testimonial:</em> Hecha por testigos de vida.<br>
+                - <em>Buscando conversión:</em> Tiende a provocar un cambio de vida.</p>
+                <div class="subsection-title">B. Tiene como elementos básicos la oración, el testimonio y la amistad</div>
+                <p>- <strong>Oración ("intendencia" o "palanca"):</strong> Elemento característico, asegura la eficacia del resto de actuaciones.<br>
+                - <strong>Testimonio:</strong> La forma de comunicar el mensaje es el testimonio de vida.<br>
+                - <strong>Amistad:</strong> "Hacer amigos para hacerlos amigos de Cristo". Es la forma de relación humana profunda que se convierte en cauce de comunión.</p>
+                <div class="subsection-title">C. Dimensión personal y comunitaria</div>
+                <p>Va dirigido a cada persona concreta, respetando su singularidad, pero promueve la vivencia de la amistad con Cristo y con los hermanos.</p>
+                <div class="subsection-title">D. Inductivo</div>
+                <p>Nace y aprende a caminar en la vida, sacando de la experiencia de cada día, iluminada por el Evangelio, los criterios y medios para orientar la vida. Exige una atención permanente a la realidad para su actualización constante.</p>
+
+                <div class="section-title">5. Conclusión</div>
+                <p>El método posibilita una acción evangelizadora eficaz. Tiene la capacidad de adaptarse a realidades y circunstancias diversas. Hace posible el triple encuentro. Los dirigentes necesitan conocerlo, apreciarlo y respetarlo para aplicarlo adecuadamente.</p>
+                <button class="back-to-top" onclick="scrollToTop()">↑</button>
+            </div>
+
+            <!-- Capítulo 7: Precursillo -->
+            <div id="cap7" class="tab-content">
+                <h2 class="chapter-title">Capítulo 7: El Precursillo</h2>
+                <div class="section-title">1. Introducción</div>
+                <p>El Precursillo es el primer tiempo del método, vital para la eficacia evangelizadora en la persona y para la fermentación de los ambientes. Los tres tiempos son inseparables y forman una unidad orgánica.</p>
+
+                <div class="section-title">2. Descripción</div>
+                <p>Es el primer tiempo del método evangelizador. Incluye la búsqueda, selección y preparación de candidatos, el estudio y discernimiento de los ambientes, y la preparación espiritual, personal y material para el Cursillo.</p>
+
+                <div class="section-title">3. Finalidad</div>
+                <p>Buscar y preparar a personas en los ambientes (con opción preferencial por los alejados) para posibilitarles la experiencia del encuentro y llevarles a un proceso de conversión. Estudiar y discernir ambientes decisivos y seleccionar en ellos personas capaces de transformarlos.</p>
+
+                <div class="section-title">4. Desarrollo</div>
+                <div class="subsection-title">A. Búsqueda y selección de candidatos</div>
+                <p>Se busca a personas que puedan vivir la experiencia del Cursillo, transformarse y actuar como fermento. Está abierto a toda persona, con prioridad para los alejados. Se presta especial atención a personas con mayor capacidad de influencia ("agentes de transformación").</p>
+                <div class="subsection-title">B. Preparación de candidatos</div>
+                <p>Es esencial. Objetivos: ayudar a tomar conciencia de la propia realidad, motivar e ilusionar por una vida más plena, crear disposición de escucha y clarificar qué es el Cursillo. Se hace desde la oración, el testimonio de vida y, sobre todo, la amistad.</p>
+                <div class="subsection-title">C. Estudio y discernimiento de ambientes</div>
+                <p>Se realiza en conjunción con la búsqueda de candidatos. Se estudian los ambientes para entender mejor a las personas que están en ellos y para priorizar la actuación evangelizadora. Se hace en el marco de la Iglesia local y en comunión con sus planes pastorales.</p>
+
+                <div class="section-title">5. Los responsables en el Precursillo</div>
+                <p>La responsabilidad recae en la Escuela de Dirigentes y el Secretariado. Ellos organizan y preparan todas las actividades. También forman y preparan a los equipos de dirigentes para cada Cursillo. Los dirigentes deben tener actitudes básicas: ser instrumentos del Espíritu, sentirse enviados por la Iglesia, ofrecer testimonio coherente, vivir en comunión y mostrar disposición para amar y servir.</p>
+
+                <div class="section-title">6. Conclusión</div>
+                <p>El Precursillo tiene como principio y fundamento la Gracia de Dios, por lo que la oración es esencial. Como obra humana, es soportado por la comunidad: la comunidad de la Escuela y del Secretariado, la comunidad entera del MCC (Grupos y Ultreyas) y la comunidad eclesial.</p>
+                <button class="back-to-top" onclick="scrollToTop()">↑</button>
+            </div>
+
+            <!-- Capítulo 8: Cursillo -->
+            <div id="cap8" class="tab-content">
+                <h2 class="chapter-title">Capítulo 8: El Cursillo</h2>
+                <div class="section-title">1. Introducción</div>
+                <p>El Cursillo es el tiempo segundo y central del método. Es un momento determinante para la finalidad del Movimiento, donde se pretende y normalmente se produce el encuentro personal con Dios y el inicio del proceso de conversión.</p>
+
+                <div class="section-title">2. Principios generales del Cursillo</div>
+                <div class="subsection-title">A. El Cursillo en el método del MCC</div>
+                <p>Es inseparable del Precursillo y del Poscursillo. Es un elemento más del proceso metodológico evangelizador.</p>
+                <div class="subsection-title">B. Descripción</div>
+                <p>Es una forma específica de evangelización kerigmática, descrita como la "comunicación jubilosa del ser cristiano". Propicia la vivencia y convivencia de lo fundamental cristiano.</p>
+                <div class="subsection-title">C. Objetivos</div>
+                <p>Iluminar toda la vida a la luz del Evangelio. Posibilitar un encuentro personal con Cristo (triple encuentro), propiciar el inicio de un proceso de conversión, despertar el sentido comunitario y motivar a la responsabilidad cristiana en los propios ambientes.</p>
+                <div class="subsection-title">D. Dimensiones esenciales</div>
+                <p><strong>Experiencia personal:</strong> Enfocado al encuentro consigo mismo.<br>
+                <strong>Vivencia comunitaria:</strong> Relación con los demás y amistad.<br>
+                <strong>Libertad:</strong> Se vive y se plantea con absoluto respeto a la libertad de cada persona.</p>
+                <div class="subsection-title">E. Recursos para el desarrollo</div>
+                <p><strong>1. La Gracia de Dios:</strong> Principio y fundamento.<br>
+                <strong>2. El equipo de dirigentes:</strong> Laicos y sacerdotes que forman una pequeña comunidad cristiana en amistad, encarnan y proclaman el mensaje.<br>
+                <strong>3. Una técnica metodológica:</strong> Crea un clima que facilita el encuentro con el Señor.</p>
+
+                <div class="section-title">3. El equipo de dirigentes</div>
+                <p>Forman una comunidad cristiana en amistad. Deben poseer la mentalidad del MCC y conocer su metodología. El rector/coordinador es el principal responsable. El director espiritual vela por la coherencia doctrinal. El equipo debe prepararse espiritual, metodológica y comunitariamente antes y durante el Cursillo. Deben tener actitudes básicas: apertura al Espíritu, sentirse enviados por la Iglesia, ser testigos, tener espíritu de comunión y estar dispuestos a servir y amar.</p>
+
+                <div class="section-title">4. Elementos metodológicos del Cursillo</div>
+                <div class="subsection-title">A. Proclamación</div>
+                <p>Kerigmática (jubilosa y testimonial), centrada en lo esencial, con sólida base doctrinal. Se hace mediante "Rollos" (charlas) concatenados lógicamente, con carácter interpelativo, inteligibles y vivenciales (testimoniales).</p>
+                <div class="subsection-title">B. Convivencia</div>
+                <p>Se desarrolla en tres niveles:<br>
+                <strong>1. Clima general:</strong> Heterogeneidad, régimen de internado, adecuada planificación, ambiente de amistad, alegría y naturalidad.<br>
+                <strong>2. Grupos (Decurias):</strong> Facilitan la asimilación de la doctrina y la comunicación. Evolucionan de grupos de trabajo a comunidades de fe y amistad.<br>
+                <strong>3. Contacto personal ("Labor de pasillo"):</strong> Comunicación y acompañamiento interpersonal profundo, desarrollado a través del diálogo personal y la amistad.</p>
+                <div class="subsection-title">C. Oraciones y celebraciones litúrgicas</div>
+                <p><strong>1. Oración por el Cursillo:</strong> La comunidad orante (dentro y fuera del Cursillo) es fundamental.<br>
+                <strong>2. Oración en el Cursillo:</strong> El equipo enseña a rezar rezando. Se practican oraciones comunitarias (mañana y noche) y visitas al Sagrario (especialmente en el segundo día).<br>
+                <strong>3. Celebraciones sacramentales:</strong> Eucaristía (fuente y cima del Cursillo) y Reconciliación (de forma libre y respetuosa).<br>
+                <strong>4. La Virgen María:</strong> Su importancia se muestra por referencias en la proclamación, en la oración y por el testimonio del equipo.</p>
+                <div class="subsection-title">D. Fases del Cursillo</div>
+                <p>El Cursillo se estructura en cuatro fases pedagógicas:<br>
+                <strong>1. Fase de Preparación (Retiro):</strong> Despertar la conciencia y la inquietud por una vida nueva.<br>
+                <strong>2. Fase de Proclamación:</strong> Presentar el mensaje básico de salvación (kerigma).<br>
+                <strong>3. Fase de Desarrollo de la Vida Cristiana:</strong> Orientar a la vivencia cristiana y posibilitar el encuentro personal con el Señor.<br>
+                <strong>4. Fase de Proyección/Inserción:</strong> Abrir al encuentro con los demás, proyectar al cursillista a la vida ordinaria y a la responsabilidad en los ambientes, impulsar la integración en una comunidad (Grupo y Ultreya).<br>
+                <strong>5. La Clausura:</strong> Acto final, de Iglesia, donde la comunidad del MCC se reúne con los nuevos hermanos para compartir experiencia, testimonio y compromiso.</p>
+
+                <div class="section-title">6. Conclusión</div>
+                <p>El Cursillo es un maravilloso don de Dios. Se consigue por la gracia de Dios, la libre opción de la persona y una técnica metodológica desarrollada por el equipo. Todos sus elementos tienen la misma finalidad: ser cauces de la gracia. Para que sea lo que puede ser, se necesita un profundo conocimiento, respeto y disponibilidad para servir.</p>
+                <button class="back-to-top" onclick="scrollToTop()">↑</button>
+            </div>
+
+            <!-- Capítulo 9: Poscursillo -->
+            <div id="cap9" class="tab-content">
+                <h2 class="chapter-title">Capítulo 9: El Poscursillo</h2>
+                <div class="section-title">1. Introducción</div>
+                <p>El Poscursillo es la culminación del método, el tiempo clave para que se cumpla la finalidad del MCC: que la persona viva permanentemente lo encontrado en el Cursillo y que se consiga la fermentación de los ambientes.</p>
+
+                <div class="section-title">2. Descripción</div>
+                <p>Es el tercer y último tiempo del método, orientado a impulsar la conversión personal y la fermentación de ambientes. Es un proceso dinámico y abierto, animado por los líderes del MCC, con una dimensión personal y una dimensión comunitaria.</p>
+
+                <div class="section-title">3. Finalidad</div>
+                <div class="subsection-title">A. Planteamiento general</div>
+                <p>Renovar, acelerar y perfeccionar la conversión personal iniciada en el Cursillo; promover grupos de cristianos (Reuniones de Grupo y Ultreyas) y, desde ellos, promover la fermentación evangélica de los ambientes.</p>
+                <div class="subsection-title">B. En relación con la persona</div>
+                <p>Profundizar el triple encuentro, posibilitar la vida de santidad (conversión consciente, creciente y compartida, apoyada en el trípode de piedad, estudio y acción), acrecentar la conciencia de ser fermento y proporcionar una circunstancia comunitaria (los grupos).</p>
+                <div class="subsection-title">C. En relación con los ambientes</div>
+                <p>Promover y apoyar a grupos de cristianos, impulsar la transformación de ambientes y, en definitiva, impregnar de Evangelio los ambientes, dilatando el Reino de Dios.</p>
+                <div class="subsection-title">D. Poscursillo y evangelización</div>
+                <p>La finalidad última es la evangelización, que se hace realidad en la fermentación evangélica de los ambientes. Es la misión común de la Iglesia, consecuencia de la vocación a la santidad, y para los laicos se realiza en el compromiso en las realidades temporales. El Poscursillo se desarrolla en comunión y corresponsabilidad eclesial.</p>
+
+                <div class="section-title">4. Medios del Poscursillo</div>
+                <div class="subsection-title">A. Los medios específicos del Poscursillo</div>
+                <p>Siempre orientados a la conversión integral, la vivencia comunitaria de la fe y la responsabilidad apostólica. Son un medio, no un fin en sí mismos, y no agotan los cauces de vivencia comunitaria.</p>
+                <div class="subsection-title">B. La Reunión de Grupo (El Grupo de Amistad)</div>
+                <p>“Grupo de personas amigas y cristianas que se reúnen para ser más amigas y más cristianas”. Es un grupo de amistad convertido en circunstancia santificante. Tiene dos elementos: el grupo (lo más importante) y la reunión (lo que hace posible que el grupo se forme y persista). El grupo debe tener como fundamento la amistad, un deseo común de crecimiento, una mentalidad comunitaria y mantener un clima de libertad, sinceridad, confidencialidad, respeto y aceptación. La reunión se caracteriza por la seriedad, sinceridad, confidencialidad y regularidad.</p>
+                <div class="subsection-title">C. La Ultreya</div>
+                <p>“Reunión de Reuniones de Grupo”. Es un espacio comunitario y eclesial, formado fundamentalmente por Grupos de amistad. Tiene la misma finalidad que el MCC: crear grupos evangelizadores. Promueve el crecimiento en la vivencia de lo fundamental cristiano, la convivencia, el sentido eclesial y el compromiso en los ambientes. Siempre debe existir convivencia, testimonio y oración. No hay un método concreto esencial; el mejor es el que posibilita vivir, crecer y compartir la vivencia del Cursillo.</p>
+
+                <div class="section-title">5. Los dirigentes en el Poscursillo</div>
+                <p>La responsabilidad es de la Escuela y del Secretariado. El papel de los dirigentes es animar, acompañar y ayudar a los cursillistas y a los grupos. Tareas individuales: mantener contacto personal en amistad y sinceridad, compartir la propia vida y hacerse amigo de todos. Tareas comunitarias: animar y hacer vivos los grupos y las Ultreyas, atendiendo sus dimensiones comunitaria, formativa, espiritual y apostólica. Las actitudes son las mismas que en el Precursillo y el Cursillo.</p>
+
+                <div class="section-title">6. Conclusión</div>
+                <p>Todo en el Poscursillo está dirigido a la vivencia de una auténtica vida cristiana, a la edificación de la Iglesia y a la construcción de un mundo mejor. Las estructuras y actividades están en función de esa finalidad: perseverar en la vida cristiana, no en el MCC. El MCC ofrece un método propio para la perseverancia y maduración en la fe, para posibilitar la transformación del mundo.</p>
+                <button class="back-to-top" onclick="scrollToTop()">↑</button>
+            </div>
+
+            <!-- Capítulo 10: En la Iglesia -->
+            <div id="cap10" class="tab-content">
+                <h2 class="chapter-title">Capítulo 10: El MCC en la Iglesia</h2>
+                <div class="section-title">1. Introducción</div>
+                <p>La Iglesia es sacramento universal de salvación, misterio de comunión y misión. Los laicos participan en esta misión, penetrando en el orden temporal para perfeccionarlo con el espíritu del Evangelio. Los movimientos eclesiales, como dones del Espíritu, reflejan la complementariedad de carismas e institución en la Iglesia.</p>
+
+                <div class="section-title">2. El MCC, un movimiento eclesial</div>
+                <div class="subsection-title">A. El MCC es un movimiento eclesial</div>
+                <p>Surgido como don del Espíritu para bien de la Iglesia y del mundo. Lo forman personas que, después de un Cursillo, se unen para vivir de un modo más auténtico la vida cristiana. La participación es libre y abierta.</p>
+                <div class="subsection-title">B. Conforme a los criterios de eclesialidad de ChL n.° 30</div>
+                <p>Cumple los cinco criterios de Juan Pablo II:<br>
+                1. <strong>Primacía de la santidad:</strong> Promueve la conversión constante para alcanzar la santidad.<br>
+                2. <strong>Confesar la fe católica:</strong> Se ajusta a proclamar el Evangelio en coherencia con el Magisterio.<br>
+                3. <strong>Testimonio de comunión:</strong> Mantiene una relación filial, firme y convencida con el Papa y los Obispos.<br>
+                4. <strong>Participación en el fin apostólico:</strong> Se identifica plenamente con la evangelización y la santificación de los hombres.<br>
+                5. <strong>Compromiso en la sociedad:</strong> Promueve la presencia cristiana del laico en la sociedad para que los hombres sean más cristianos.</p>
+                <div class="subsection-title">C. Con un protagonismo especial de los laicos</div>
+                <p>Desde sus inicios, los laicos han tenido un papel esencial. El MCC es un movimiento en el que los laicos descubren y asumen su responsabilidad en la Iglesia y en el mundo. Esta responsabilidad se concreta en el propio MCC, donde los dirigentes son laicos, y en las estructuras de servicio (Escuelas y Secretariados). La mentalidad del MCC enfatiza que la vida cristiana se vive en las realidades temporales del mundo.</p>
+                <div class="subsection-title">D. En comunión y participación de laicos y sacerdotes</div>
+                <p>Es un movimiento en el que laicos y sacerdotes (y religiosos) contribuyen en comunión a una misma misión: evangelizar. Existe una colaboración y ensamblaje adecuado, con un trabajo en equipo de creativa complementariedad.</p>
+                <div class="subsection-title">E. Como un movimiento universal y diocesano</div>
+                <p>Es un movimiento de la Iglesia universal, implantado en todo el mundo y reconocido por la Jerarquía. Pero es eminentemente diocesano, que se encarna en la realidad de una diócesis concreta, bajo la autoridad episcopal, para el logro de su acción evangelizadora.</p>
+
+                <div class="section-title">3. La misión del MCC</div>
+                <div class="subsection-title">A. Enmarcada en la actividad evangelizadora de la Iglesia</div>
+                <p>El MCC es esencialmente un movimiento de evangelización y se ofrece como instrumento para la Iglesia y para el mundo.</p>
+                <div class="subsection-title">B. Centrada en el kerigma</div>
+                <p>Su acción se centra en el primer anuncio de la Buena Noticia a quienes no lo conocen o no lo viven, orientada hacia la conversión de las personas. Este kerigma debe integrarse con otros elementos de la evangelización (maduración en la fe, participación en la comunidad) que se desarrollan en el Poscursillo.</p>
+                <div class="subsection-title">C. Actuando sobre personas y ambientes</div>
+                <p>La persona es el valor fundamental. El MCC actúa también en la evangelización de ambientes, considerando a las personas en ellos y estudiando ambientes prioritarios, para crear grupos de cristianos que los transformen.</p>
+                <div class="subsection-title">D. Con un método propio</div>
+                <p>Toda su acción evangelizadora se lleva a cabo conforme a su método propio, de contrastada eficacia.</p>
+
+                <div class="section-title">4. Comunión en el MCC</div>
+                <div class="subsection-title">A. Comunión en el MCC</div>
+                <p>La Iglesia es misterio de comunión. El MCC debe vivir y enseñar a vivir este espíritu de comunión, convirtiéndose en "casa y escuela de comunión".</p>
+                <div class="subsection-title">B. Comunión con la Iglesia universal</div>
+                <p>Implica saberse y sentirse Iglesia, servir a la Iglesia, hacer Iglesia, en comunión con el Papa y el Magisterio. El MCC es un agente en la construcción de la Iglesia como sacramento de comunión.</p>
+                <div class="subsection-title">C. Comunión con la Iglesia diocesana</div>
+                <p>El MCC es un elemento y un instrumento de la Iglesia diocesana. Debe integrarse en la pastoral diocesana, colaborando en sus planes. También debe fomentar la comunión con otros movimientos eclesiales, buscando cauces de coordinación y colaboración.</p>
+
+                <div class="section-title">5. Conclusión</div>
+                <p>El MCC encuentra su ser en la Iglesia, como movimiento eclesial, de la Iglesia y para el mundo. Está comprometido en la evangelización, en el campo específico del primer anuncio y de la fermentación de los ambientes. Toda su misión tiene sentido desde la vivencia de la comunión, tanto en la Iglesia universal como en la Iglesia local.</p>
+                <button class="back-to-top" onclick="scrollToTop()">↑</button>
+            </div>
+
+            <!-- Capítulo 11: Estructuras -->
+            <div id="cap11" class="tab-content">
+                <h2 class="chapter-title">Capítulo 11: Estructuras de Servicio en el MCC</h2>
+                <div class="section-title">1. Introducción</div>
+                <p>El MCC requiere un grupo humano que asuma la mentalidad y se haga responsable de la actuación estratégica y metodológica. Este grupo debe darse la organización mínima necesaria, que en el MCC se llama "estructuras de servicio": la Escuela y el Secretariado.</p>
+
+                <div class="section-title">2. Escuela de Dirigentes</div>
+                <div class="subsection-title">A. Naturaleza</div>
+                <p>Es una pieza esencial, el eje que dinamiza todo el Movimiento. Es una comunidad de cristianos que, en clima de amistad, buscan estar centrados, comprometidos y conjuntados para acelerar la vivencia de lo fundamental cristiano en sí mismos y en los ambientes. Es ante todo un grupo humano, una comunidad.</p>
+                <div class="subsection-title">B. Finalidad</div>
+                <p>Existe para hacer posible la finalidad del MCC: la transformación de los ambientes. Esto supone intensificar la vivencia de lo fundamental cristiano en tres frentes: en sus miembros (los dirigentes), en el MCC (Grupos y Ultreyas) y en los ambientes. Ayuda a los miembros a ser dirigentes auténticos, impulsando la vida de los grupos y promoviendo la actuación evangelizadora en los ambientes.</p>
+                <div class="subsection-title">C. Dimensiones</div>
+                <p><strong>1. Escuela de Santidad:</strong> Promueve un modelo de vida basada en el seguimiento de Cristo (oración, Palabra, sacramentos, bienaventuranzas, amor, servicio).<br>
+                <strong>2. Escuela de Comunión:</strong> Promueve una "espiritualidad de comunión", estableciendo cauces para la amistad, la comunicación, el diálogo, la cooperación y la corresponsabilidad.<br>
+                <strong>3. Escuela de Formación:</strong> Proporciona una formación integral (humana, espiritual, doctrinal, social) y cuida especialmente la formación específica en el carisma, mentalidad, finalidad, estrategia y método del MCC.</p>
+                <div class="subsection-title">D. Miembros de la Escuela</div>
+                <p>Son los dirigentes del MCC, aquellos que aceptan libremente asumir la misión evangelizadora desde lo específico del MCC. Se reconocen por poseer cualidades humanas (madurez, coherencia), virtudes sobrenaturales (fe, esperanza, caridad) y un estilo propio (ilusión por el kerigma, entrega, espíritu comunitario).</p>
+                <div class="subsection-title">E. Organización de la Escuela</div>
+                <p>No tiene una forma concreta. Su estructura y desarrollo están determinados por las necesidades y posibilidades de cada lugar, manteniendo siempre la misma base (carisma, mentalidad, finalidad, método).</p>
+
+                <div class="section-title">3. Secretariados</div>
+                <div class="subsection-title">A. Conceptos genéricos</div>
+                <p>Son los organismos específicos para orientar, coordinar e impulsar al MCC en las realidades diocesanas o nacionales. Les compete ser custodios de la identidad del MCC, promover su acción evangelizadora y concretar su integración en la actividad evangelizadora de la Iglesia. Conjugan responsabilidad/autoridad (confirmada por la Jerarquía) y servicio a la comunidad cursillista.</p>
+                <div class="subsection-title">B. El Secretariado Diocesano</div>
+                <p><strong>1. Naturaleza:</strong> Estructura de servicio confirmada por el Obispo Diocesano.<br>
+                <strong>2. Funciones y servicios:</strong> Mantener la identidad, coordinar la estrategia y el método, programar y realizar Cursillos, atender el Poscursillo, atender la Escuela, mantener contacto con el Secretariado Nacional e insertar el MCC en la pastoral diocesana.<br>
+                <strong>3. Composición:</strong> Miembros de la Escuela, escogidos por los cursillistas y confirmados por el Obispo (laicos, sacerdotes, religiosos).</p>
+                <div class="subsection-title">C. El Secretariado Nacional</div>
+                <p><strong>1. Naturaleza:</strong> Estructura de servicio reconocida por la Conferencia Episcopal, vía de comunión y orientación del MCC en un país.<br>
+                <strong>2. Funciones y servicios:</strong> Iluminar, coordinar, dar unidad al MCC en el país; promover su inicio o desarrollo; ayudar a los Secretariados Diocesanos; mantener comunicación con otros Secretariados Nacionales y con los Grupos Internacionales.</p>
+
+                <div class="section-title">4. Estructuras Internacionales</div>
+                <div class="subsection-title">A. Grupos Internacionales</div>
+                <p>Organismo que reúne y representa a los Secretariados Nacionales de una región (OLCC, GECC, NACG, APG). Su misión es coordinar, impulsar la reflexión sobre la identidad del MCC, ayudar a su promoción y ordenar recursos. Se reúnen en Encuentros Internacionales.</p>
+                <div class="subsection-title">B. Organismo Mundial de Cursillos de Cristiandad (OMCC)</div>
+                <p><strong>1. Naturaleza:</strong> Organismo de coordinación del MCC a nivel mundial, responsable del intercambio de información e iniciativas, al servicio de la unidad dinámica del Movimiento.<br>
+                <strong>2. Funciones:</strong> Ser ámbito de comunión de los Grupos Internacionales, conservar al MCC en su fidelidad a la Iglesia, preservar su identidad y unidad, promover la cooperación entre Grupos Internacionales, reflexionar sobre su papel mundial y ayudar a su introducción en nuevos países.<br>
+                <strong>3. Estructura:</strong> Integrado por su Comité Ejecutivo y los Comités Ejecutivos de los Grupos Internacionales. Cada cuatro años su sede se confía a un Grupo Internacional distinto.<br>
+                <strong>4. Encuentros Mundiales:</strong> Son el lugar para la reflexión sobre la realidad del MCC a escala universal y para el discernimiento colegiado. Participan todos los países con Secretariado Nacional o aval de su Conferencia Episcopal.</p>
+
+                <div class="section-title">5. Conclusión</div>
+                <p>Las estructuras de servicio son esenciales, pues son las que realmente conforman y hacen realidad el MCC. Se hacen realidad en los dirigentes, pues el MCC será lo que sean sus dirigentes. Necesitan constante atención, desde la oración, la reflexión y el discernimiento comunitario, para mantener su identidad y servir fielmente al Movimiento.</p>
+                <button class="back-to-top" onclick="scrollToTop()">↑</button>
+            </div>
+
+            <!-- Juego de Preguntas -->
+            <div id="quiz" class="tab-content">
+                <div class="quiz-container">
+                    <h2 class="quiz-title">¡Pon a Prueba tu Conocimiento!</h2>
+                    <p class="score-display" id="scoreDisplay">Puntuación: 0/10</p>
+
+                    <div class="question">1. Según el numeral 40, ¿cuál es la fuente del carisma del MCC?</div>
+                    <div class="options">
+                        <label><input type="radio" name="q1" value="a"> a) La creatividad de sus fundadores humanos.</label>
+                        <label><input type="radio" name="q1" value="b"> b) Un don que el Espíritu Santo derrama en su Iglesia.</label>
+                        <label><input type="radio" name="q1" value="c"> c) Una decisión del Concilio Vaticano II.</label>
+                        <label><input type="radio" name="q1" value="d"> d) Una estrategia de marketing pastoral.</label>
+                    </div>
+
+                    <div class="question">2. ¿Cuál es la opción básica de la estrategia del MCC?</div>
+                    <div class="options">
+                        <label><input type="radio" name="q2" value="a"> a) Crear grandes eventos multitudinarios.</label>
+                        <label><input type="radio" name="q2" value="b"> b) Transformar personas para transformar ambientes.</label>
+                        <label><input type="radio" name="q2" value="c"> c) Construir templos y centros de convenciones.</label>
+                        <label><input type="radio" name="q2" value="d"> d) Formar sacerdotes y diáconos.</label>
+                    </div>
+
+                    <div class="question">3. ¿Qué es el "Precursillo" en el método del MCC?</div>
+                    <div class="options">
+                        <label><input type="radio" name="q3" value="a"> a) Un retiro espiritual de preparación para sacerdotes.</label>
+                        <label><input type="radio" name="q3" value="b"> b) El primer tiempo del método, que incluye la búsqueda, selección y preparación de candidatos y el estudio de los ambientes.</label>
+                        <label><input type="radio" name="q3" value="c"> c) La etapa final del proceso, después del Cursillo.</label>
+                        <label><input type="radio" name="q3" value="d"> d) Un sinónimo de la Reunión de Grupo.</label>
+                    </div>
+
+                    <div class="question">4. ¿Cuál de estos NO es un rasgo esencial de la mentalidad del MCC?</div>
+                    <div class="options">
+                        <label><input type="radio" name="q4" value="a"> a) Una nueva visión de Dios como Amor.</label>
+                        <label><input type="radio" name="q4" value="b"> b) La convicción de que el cristianismo es la solución al hombre.</label>
+                        <label><input type="radio" name="q4" value="c"> c) La importancia de la amistad, la sinceridad y la alegría.</label>
+                        <label><input type="radio" name="q4" value="d"> d) La obligación de pertenecer a una orden religiosa.</label>
+                    </div>
+
+                    <div class="question">5. ¿Qué significa "fermentar evangelicamente los ambientes"?</div>
+                    <div class="options">
+                        <label><input type="radio" name="q5" value="a"> a) Imponer leyes religiosas en el gobierno.</label>
+                        <label><input type="radio" name="q5" value="b"> b) Transformar cristianamente la sociedad, iluminando y ordenando las realidades temporales conforme al Evangelio.</label>
+                        <label><input type="radio" name="q5" value="c"> c) Organizar protestas y manifestaciones públicas.</label>
+                        <label><input type="radio" name="q5" value="d"> d) Crear empresas con fines de lucro para financiar la Iglesia.</label>
+                    </div>
+
+                    <div class="question">6. ¿Cuál es la finalidad última del MCC según el documento?</div>
+                    <div class="options">
+                        <label><input type="radio" name="q6" value="a"> a) Organizar el mayor número posible de Cursillos al año.</label>
+                        <label><input type="radio" name="q6" value="b"> b) Posibilitar la vivencia y convivencia de lo Fundamental Cristiano y promover núcleos de cristianos que fermenten de Evangelio los ambientes.</label>
+                        <label><input type="radio" name="q6" value="c"> c) Convertir a todos los no católicos al catolicismo romano.</label>
+                        <label><input type="radio" name="q6" value="d"> d) Recaudar fondos para obras caritativas.</label>
+                    </div>
+
+                    <div class="question">7. ¿Qué es la "Ultreya" en el MCC?</div>
+                    <div class="options">
+                        <label><input type="radio" name="q7" value="a"> a) Una oración específica que se reza al final del Cursillo.</label>
+                        <label><input type="radio" name="q7" value="b"> b) Una Reunión de Reuniones de Grupo, espacio comunitario y eclesial para crecer, compartir y proyectar la misión.</label>
+                        <label><input type="radio" name="q7" value="c"> c) El nombre que se le da al equipo de dirigentes de un Cursillo.</label>
+                        <label><input type="radio" name="q7" value="d"> d) Un sacramento especial del MCC.</label>
+                    </div>
+
+                    <div class="question">8. ¿Qué organismo es el encargado de la coordinación del MCC a nivel mundial y recibió el reconocimiento canónico en 2004?</div>
+                    <div class="options">
+                        <label><input type="radio" name="q8" value="a"> a) La Conferencia Episcopal de España.</label>
+                        <label><input type="radio" name="q8" value="b"> b) El Grupo Europeo de Cursillos de Cristiandad (GECC).</label>
+                        <label><input type="radio" name="q8" value="c"> c) El Organismo Mundial de Cursillos de Cristiandad (OMCC).</label>
+                        <label><input type="radio" name="q8" value="d"> d) El Secretariado Nacional de Mallorca.</label>
+                    </div>
+
+                    <div class="question">9. ¿Cuál de estos es un elemento esencial del método del MCC?</div>
+                    <div class="options">
+                        <label><input type="radio" name="q9" value="a"> a) Ser kerigmático, centrado en el primer anuncio jubiloso y testimonial.</label>
+                        <label><input type="radio" name="q9" value="b"> b) Ser exclusivamente intelectual y académico.</label>
+                        <label><input type="radio" name="q9" value="c"> c) Basarse únicamente en la imposición de normas.</label>
+                        <label><input type="radio" name="q9" value="d"> d) Priorizar el canto gregoriano sobre cualquier otra forma de oración.</label>
+                    </div>
+
+                    <div class="question">10. ¿Qué figura clave del inicio del MCC en Mallorca es reconocida como un laico que tuvo un papel predominante?</div>
+                    <div class="options">
+                        <label><input type="radio" name="q10" value="a"> a) El Papa Pablo VI.</label>
+                        <label><input type="radio" name="q10" value="b"> b) Mons. Juan Hervás.</label>
+                        <label><input type="radio" name="q10" value="c"> c) Eduardo Bonnín.</label>
+                        <label><input type="radio" name="q10" value="d"> d) Manuel Aparici.</label>
+                    </div>
+
+                    <button class="submit-btn" onclick="checkAnswers()">¡Revisar Mis Respuestas!</button>
+                    <div id="quizResult"></div>
+                </div>
+                <button class="back-to-top" onclick="scrollToTop()">↑</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Basado en "Ideas Fundamentales del Movimiento de Cursillos de Cristiandad" - Tercera Edición (OMCC, 2014)</p>
+        <p>© 2024 - Herramienta educativa interactiva</p>
+    </footer>
+
+    <script>
+        // Función para mostrar el contenido principal y ocultar la portada
+        function mostrarContenido() {
+            document.getElementById('portada').style.display = 'none';
+            document.getElementById('contenidoPrincipal').style.display = 'block';
+            // Desplazarse suavemente al inicio del contenido
+            document.querySelector('.tabs-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Función para abrir pestañas
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].className = tabcontent[i].className.replace(" active", "");
+            }
+            tablinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).className += " active";
+            evt.currentTarget.className += " active";
+
+            // Desplazarse suavemente al inicio del contenido de la pestaña
+            document.getElementById(tabName).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Función para el botón de volver arriba
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mostrar/ocultar el botón de volver arriba
+        window.onscroll = function() {
+            var button = document.querySelector('.back-to-top');
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                button.style.display = "flex";
+            } else {
+                button.style.display = "none";
+            }
+        };
+
+        // Variables y funciones para el Quiz
+        let score = 0;
+
+        function checkAnswers() {
+            const correctAnswers = {
+                q1: 'b',
+                q2: 'b',
+                q3: 'b',
+                q4: 'd',
+                q5: 'b',
+                q6: 'b',
+                q7: 'b',
+                q8: 'c',
+                q9: 'a',
+                q10: 'c'
+            };
+
+            score = 0;
+
+            for (let question in correctAnswers) {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                const questionElement = document.querySelector(`input[name="${question}"]`).closest('.question');
+
+                if (selectedOption) {
+                    const parentLabel = selectedOption.parentElement;
+                    parentLabel.style.border = '2px solid transparent';
+                    if (selectedOption.value === correctAnswers[question]) {
+                        score++;
+                        parentLabel.style.border = '2px solid #4CAF50';
+                        parentLabel.style.backgroundColor = 'rgba(76, 175, 80, 0.1)';
+                    } else {
+                        parentLabel.style.border = '2px solid #F44336';
+                        parentLabel.style.backgroundColor = 'rgba(244, 67, 54, 0.1)';
+                    }
+                }
+            }
+
+            const resultDiv = document.getElementById('quizResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `¡Has obtenido ${score} de 10 puntos!`;
+
+            if (score === 10) {
+                resultDiv.className = 'result-correct';
+                resultDiv.innerHTML += "<br>¡Excelente! ¡Eres un experto en las Ideas Fundamentales del MCC!";
+            } else if (score >= 7) {
+                resultDiv.className = 'result-correct';
+                resultDiv.innerHTML += "<br>¡Muy bien! Tienes un gran conocimiento del MCC.";
+            } else if (score >= 5) {
+                resultDiv.className = 'result-incorrect';
+                resultDiv.innerHTML += "<br>¡Regular! Repasa los capítulos para reforzar tus conocimientos.";
+            } else {
+                resultDiv.className = 'result-incorrect';
+                resultDiv.innerHTML += "<br>¡Sigue estudiando! Vuelve a leer el documento, especialmente los capítulos que te resultaron más difíciles.";
+            }
+
+            document.getElementById('scoreDisplay').innerText = `Puntuación: ${score}/10`;
+        }
+    </script>
+</body>
+</html>
